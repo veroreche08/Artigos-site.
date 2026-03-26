@@ -3,112 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <title>Artigos Científicos</title>
+
 <style>
 body {font-family: Arial; background:#f4f6f8; margin:0;}
 header {background:#2c7be5; color:white; padding:20px; text-align:center;}
 .container {padding:20px;}
-.artigo {background:white; padding:20px; margin-bottom:20px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-h2 {color:#2c7be5;}
-textarea {
-    width:100%;
-    min-height:150px;
-    margin-top:10px;
-    padding:10px;
-    font-size:14px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    resize:vertical;
-}
+.artigo {background:white; padding:20px; margin-bottom:20px; border-radius:10px;}
+textarea {width:100%; min-height:150px;}
 </style>
+
 </head>
 <body>
 
 <header><h1>Artigos Científicos</h1></header>
+
 <div class="container">
 
-
-<!-- Artigos fixos -->
-<div class="artigo"><h2>Artigo 1</h2><p><b>Título:</b> Sistema de Gestão de Consultas Online para o SUS</p></div>
-<div class="artigo"><h2>Artigo 2</h2><p><b>Título:</b> Atendimentos Priorizados e Redução do Tempo de Espera</p></div>
-<div class="artigo"><h2>Artigo 3</h2><p><b>Título:</b> Terceiro setor e desenvolvimento socioeconômico</p></div>
-<div class="artigo"><h2>Artigo 4</h2><p><b>Título:</b> Gestão das Doações na Logística Humanitária</p></div>
-<div class="artigo"><h2>Artigo 5</h2><p><b>Título:</b> Estratégias de Comunicação no Terceiro Setor</p></div>
-<div class="artigo"><h2>Artigo 6</h2><p><b>Título:</b> Arrecadação de Recursos no Terceiro Setor</p></div>
-
-<!-- Editáveis com autosave -->
-<div class="artigo">
-<h2>Artigo 7</h2>
-<textarea id="a7" oninput="salvar('a7')"></textarea>
-</div>
-
-<div class="artigo">
-<h2>Artigo 8</h2>
-<textarea id="a8" oninput="salvar('a8')"></textarea>
-</div>
-
-<div class="artigo">
-<h2>Artigo 9</h2>
-<textarea id="a9" oninput="salvar('a9')"></textarea>
-</div>
-
-<div class="artigo">
-<h2>Artigo 10</h2>
-<textarea id="a10" oninput="salvar('a10')"></textarea>
-</div>
-
-}
-
-</script>
+<div class="artigo"><h2>Artigo 7</h2><textarea id="a7"></textarea></div>
+<div class="artigo"><h2>Artigo 8</h2><textarea id="a8"></textarea></div>
+<div class="artigo"><h2>Artigo 9</h2><textarea id="a9"></textarea></div>
+<div class="artigo"><h2>Artigo 10</h2><textarea id="a10"></textarea></div>
 
 </div>
-</body>
-</html>
 
 <script type="module">
 
-// // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBnEfbLrYhAAR134OUOjUs4s5rh2VBHi1s",
   authDomain: "artigos-site.firebaseapp.com",
   projectId: "artigos-site",
   storageBucket: "artigos-site.firebasestorage.app",
   messagingSenderId: "641284640611",
-  appId: "1:641284640611:web:5fae8e7a513d22ea6b8d56",
-  measurementId: "G-2NZBJH91MM"
+  appId: "1:641284640611:web:5fae8e7a513d22ea6b8d56"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const firebaseConfig = {
-    
-};
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 
 ["a7","a8","a9","a10"].forEach(id => {
 
   const el = document.getElementById(id);
 
-  // carregar em tempo real
+  // Carregar em tempo real
   onSnapshot(doc(db, "artigos", id), (docSnap) => {
     if (docSnap.exists()) {
       el.value = docSnap.data().texto;
     }
   });
 
-  // salvar automático
+  // Salvar automático
   el.addEventListener("input", () => {
     setDoc(doc(db, "artigos", id), {
       texto: el.value
@@ -118,3 +65,6 @@ const db = getFirestore(app);
 });
 
 </script>
+
+</body>
+</html>
