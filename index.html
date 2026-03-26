@@ -9,7 +9,7 @@ body {font-family: Arial; background:#f4f6f8; margin:0;}
 header {background:#2c7be5; color:white; padding:20px; text-align:center;}
 .container {padding:20px;}
 .artigo {background:white; padding:20px; margin-bottom:20px; border-radius:10px;}
-textarea {width:100%; min-height:150px;}
+textarea {width:100%; min-height:150px; font-size:16px;}
 </style>
 
 </head>
@@ -43,23 +43,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
 ["a7","a8","a9","a10"].forEach(id => {
 
   const el = document.getElementById(id);
 
-  // Carregar em tempo real
   onSnapshot(doc(db, "artigos", id), (docSnap) => {
     if (docSnap.exists()) {
-      el.value = docSnap.data().texto;
+
+      if (document.activeElement !== el) {
+        el.value = docSnap.data().texto || "";
+      }
+
+    } else {
+      el.value = "";
     }
   });
 
-  // Salvar automático
-  el.addEventListener("input", () => {
-    setDoc(doc(db, "artigos", id), {
-      texto: el.value
-    });
+  el.addEventListener("input", async () => {
+    try {
+      await setDoc(doc(db, "artigos", id), {
+        texto: el.value
+      });
+    } catch (e) {
+      console.error("Erro ao salvar:", e);
+    }
   });
 
 });
